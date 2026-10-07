@@ -1,0 +1,31 @@
+name: Daily Stock Scan
+
+on:
+  schedule:
+    # 每天 07:05 UTC 執行（對應台灣時間 15:05）
+    # 故意避開整點 15:00 以免排隊塞車
+    # 1-5 代表週一到週五執行，六日不執行
+    - cron: '5 7 * * 1-5'
+  workflow_dispatch: # 允許手動觸發按鈕，方便隨時測試
+
+jobs:
+  run-scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        env:
+          LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
+          LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: python auto_scan.py
