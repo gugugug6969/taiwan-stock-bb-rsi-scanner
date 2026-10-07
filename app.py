@@ -361,7 +361,7 @@ with right:
             data.columns = ["代號", "名稱", "訊號", "調整後收盤價", "%B", f"RSI {p['rsi_short']}", f"RSI {p['rsi_long']}", "下軌參考", "上軌參考", "風報比"]
             def signal_style(value):
                 return "color:#007d61;background-color:#e7f6f0;font-weight:700" if value == "BUY" else "color:#966000;background-color:#fff3da;font-weight:700"
-            st.dataframe(data.style.map(signal_style, subset=["訊號"]), width="stretch", hide_index=True, height=min(440, 36*len(results)+42))
+            st.dataframe(data.style.format({"調整後收盤價": "{:.2f}", "%B": "{:.3f}", f"RSI {p['rsi_short']}": "{:.1f}", f"RSI {p['rsi_long']}": "{:.1f}", "下軌參考": "{:.2f}", "上軌參考": "{:.2f}", "風報比": "{:.2f}"}, na_rep="—").map(signal_style, subset=["訊號"]), width="stretch", hide_index=True, height=min(440, 36*len(results)+42))
             st.markdown('<div class="detail-heading"><span class="section-label">03 / STOCK DETAIL</span><h2>拆解個股訊號</h2></div>', unsafe_allow_html=True)
             by_code = {r["code"]: r for r in results}
             selected = st.selectbox("選擇股票", options=list(by_code), format_func=lambda code: f"{code}  {by_code[code]['name']}  ·  {by_code[code]['signal']}", key="detail_code")
