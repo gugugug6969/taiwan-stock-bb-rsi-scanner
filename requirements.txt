@@ -1,9 +1,9 @@
 gradio
-streamlit
+streamlit==1.65.0
 yfinance
-pandas
+pandas>=2.1,<3
 numpy
 requests
-plotly
+plotly>=5,<7
 apscheduler
 
